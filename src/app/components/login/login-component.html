@@ -1,0 +1,68 @@
+<div class="page-wrapper">
+
+  <h1 class="app-title">Inteligentny Generator CV</h1>
+
+  <div class="login-container">
+    <p-card header="Logowanie" class="login-card">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <div class="form-field">
+          <label for="login">Email</label>
+          <input
+            pInputText
+            id="login"
+            type="email"
+            formControlName="login"
+            placeholder="Wprowadź adres e-mail"
+          />
+          <div class="error-container">
+            <div
+              class="error"
+              *ngIf="loginForm.get('login')?.touched && loginForm.get('login')?.invalid"
+            >
+              <span *ngIf="loginForm.get('login')?.errors?.['required']">Pole jest wymagane.</span>
+              <span *ngIf="loginForm.get('login')?.errors?.['email']">Nieprawidłowy adres e-mail.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="password">Hasło</label>
+          <p-password
+            id="password"
+            formControlName="password"
+            [feedback]="false"
+            [toggleMask]="true"
+            placeholder="Wprowadź hasło"
+            inputId="password"
+            autocomplete="new-password"
+            [inputStyle]="{'width':'100%'}"
+          ></p-password>
+
+          <div class="error-container">
+            <div
+              class="error"
+              *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+            >
+              <span>Pole jest wymagane.</span>
+            </div>
+          </div>
+        </div>
+
+
+        <button
+          pButton
+          type="submit"
+          label="Zaloguj się"
+          class="w-full"
+          [disabled]="loginForm.invalid || loading"
+        ></button>
+
+        <p class="register-link">
+          Nie masz konta?
+          <a routerLink="/register">Zarejestruj się</a>
+        </p>
+      </form>
+    </p-card>
+  </div>
+</div>

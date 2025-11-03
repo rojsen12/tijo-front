@@ -1,0 +1,94 @@
+<div class="page-wrapper">
+  <h1 class="app-title">Inteligentny Generator CV</h1>
+
+  <div class="login-container">
+    <p-card header="Rejestracja" class="login-card">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <div class="form-field">
+          <label for="name">Login</label>
+          <input
+            pInputText
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Wprowadź swój login"
+          />
+          <div class="error-container">
+            <div class="error" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+              <span>Pole jest wymagane.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input
+            pInputText
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Wprowadź adres e-mail"
+          />
+          <div class="error-container">
+            <div class="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+              <span *ngIf="registerForm.get('email')?.errors?.['required']">Pole jest wymagane.</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['email']">Nieprawidłowy adres e-mail.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="password">Hasło</label>
+          <p-password
+            id="password"
+            formControlName="password"
+            [feedback]="false"
+            [toggleMask]="true"
+            placeholder="Wprowadź hasło"
+            inputId="password"
+            autocomplete="new-password"
+            [inputStyle]="{'width':'100%'}"
+          ></p-password>
+          <div class="error-container">
+            <div class="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+              <span>Pole jest wymagane.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="confirmPassword">Potwierdź hasło</label>
+          <p-password
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            [feedback]="false"
+            [toggleMask]="true"
+            placeholder="Powtórz hasło"
+            inputId="confirmPassword"
+            autocomplete="new-password"
+            [inputStyle]="{'width':'100%'}"
+          ></p-password>
+          <div class="error-container">
+            <div class="error" *ngIf="passwordsDoNotMatch">
+              <span>Hasła muszą być identyczne.</span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          pButton
+          type="submit"
+          label="Zarejestruj się"
+          class="w-full"
+          [disabled]="registerForm.invalid || passwordsDoNotMatch || loading"
+        ></button>
+
+        <p class="register-link">
+          Masz już konto?
+          <a routerLink="/login">Zaloguj się</a>
+        </p>
+      </form>
+    </p-card>
+  </div>
+</div>

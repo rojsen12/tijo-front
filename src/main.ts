@@ -1,6 +1,28 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
 import { App } from './app/app';
+import { routes } from './app/app.routes';
+import { HttpClientModule } from '@angular/common/http';
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+import Lara from '@primeuix/themes/lara';
+import {importProvidersFrom} from '@angular/core';
+
+bootstrapApplication(App, {
+  providers: [
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Lara,
+        options: {
+          cssLayer: false,
+          darkModeSelector: '',
+          colorScheme: 'light'
+        }
+      }
+    }),
+    importProvidersFrom(HttpClientModule)
+  ]
+});
