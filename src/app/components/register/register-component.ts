@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import {ApiService} from '../../api/api.service';
+
 
 @Component({
   selector: 'app-register',
@@ -14,12 +16,12 @@ import { DividerModule } from 'primeng/divider';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink,
     InputTextModule,
     PasswordModule,
     ButtonModule,
     CardModule,
-    DividerModule
+    DividerModule,
+    RouterLink
   ],
   templateUrl: './register-component.html',
   styleUrls: ['./register-component.css']
@@ -27,10 +29,11 @@ import { DividerModule } from 'primeng/divider';
 export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
+  errorMsg = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {
     this.registerForm = this.fb.group({
-      name: ['', Validators.required],
+      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
@@ -42,10 +45,23 @@ export class RegisterComponent {
     return password && confirmPassword && password !== confirmPassword;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.registerForm.invalid || this.passwordsDoNotMatch) return;
+
     this.loading = true;
-    console.log('Dane rejestracji:', this.registerForm.value);
-    setTimeout(() => (this.loading = false), 1200);
+    this.errorMsg = '';
+
+    const { username, email, password } = this.registerForm.value;
+
+    this.api.register({ username, email, password }).subscribe({
+      next: (res: any) => {
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        this.errorMsg = 'Rejestracja nie powiodła się. Spróbuj ponownie.';
+        this.loading = false;
+      },
+      complete: () => (this.loading = false)
+    });
   }
 }

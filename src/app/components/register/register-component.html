@@ -6,16 +6,16 @@
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
 
         <div class="form-field">
-          <label for="name">Login</label>
+          <label for="username">Login</label>
           <input
             pInputText
-            id="name"
+            id="username"
             type="text"
-            formControlName="name"
+            formControlName="username"
             placeholder="Wprowadź swój login"
           />
           <div class="error-container">
-            <div class="error" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+            <div class="error" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
               <span>Pole jest wymagane.</span>
             </div>
           </div>
@@ -43,7 +43,7 @@
           <p-password
             id="password"
             formControlName="password"
-            [feedback]="false"
+            [feedback]="true"
             [toggleMask]="true"
             placeholder="Wprowadź hasło"
             inputId="password"
@@ -76,10 +76,14 @@
           </div>
         </div>
 
+        <div *ngIf="errorMsg" class="error-message">
+          {{ errorMsg }}
+        </div>
+
         <button
           pButton
           type="submit"
-          label="Zarejestruj się"
+          label="{{ loading ? 'Rejestrowanie...' : 'Zarejestruj się' }}"
           class="w-full"
           [disabled]="registerForm.invalid || passwordsDoNotMatch || loading"
         ></button>

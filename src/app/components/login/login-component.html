@@ -7,21 +7,20 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
 
         <div class="form-field">
-          <label for="login">Email</label>
+          <label for="username">Nazwa użytkownika</label>
           <input
             pInputText
-            id="login"
-            type="email"
-            formControlName="login"
-            placeholder="Wprowadź adres e-mail"
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Wprowadź nazwę użytkownika"
           />
           <div class="error-container">
             <div
               class="error"
-              *ngIf="loginForm.get('login')?.touched && loginForm.get('login')?.invalid"
+              *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid"
             >
-              <span *ngIf="loginForm.get('login')?.errors?.['required']">Pole jest wymagane.</span>
-              <span *ngIf="loginForm.get('login')?.errors?.['email']">Nieprawidłowy adres e-mail.</span>
+              <span>Pole jest wymagane.</span>
             </div>
           </div>
         </div>
@@ -35,7 +34,7 @@
             [toggleMask]="true"
             placeholder="Wprowadź hasło"
             inputId="password"
-            autocomplete="new-password"
+            autocomplete="current-password"
             [inputStyle]="{'width':'100%'}"
           ></p-password>
 
@@ -49,11 +48,14 @@
           </div>
         </div>
 
+        <div *ngIf="errorMsg" class="error-message">
+          {{ errorMsg }}
+        </div>
 
         <button
           pButton
           type="submit"
-          label="Zaloguj się"
+          label="{{ loading ? 'Logowanie...' : 'Zaloguj się' }}"
           class="w-full"
           [disabled]="loginForm.invalid || loading"
         ></button>

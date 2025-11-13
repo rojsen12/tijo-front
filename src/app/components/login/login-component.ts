@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {Router, RouterLink} from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { RouterLink } from '@angular/router';
+import {ApiService} from '../../api/api.service';
 
 @Component({
   selector: 'app-login',
@@ -25,19 +26,30 @@ import { RouterLink } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   loading = false;
+  errorMsg = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {
     this.loginForm = this.fb.group({
-      login: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.loginForm.invalid) return;
-    this.loading = true;
-    console.log('Dane logowania:', this.loginForm.value);
-    setTimeout(() => (this.loading = false), 1200);
-  }
 
+    this.loading = true;
+    this.errorMsg = '';
+
+    this.api.login(this.loginForm.value).subscribe({
+      next: (res: { token: string }) => {
+        this.router.navigate(['/main-page']);
+      },
+      error: () => {
+        this.errorMsg = 'Niepoprawny login lub hasło';
+        this.loading = false;
+      },
+      complete: () => (this.loading = false)
+    });
+  }
 }
