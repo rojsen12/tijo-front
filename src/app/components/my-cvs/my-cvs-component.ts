@@ -92,16 +92,6 @@ export class MyCvsComponent implements OnInit {
     return `${cv.firstName} ${cv.lastName}`;
   }
 
-  getTemplateColor(templateType: string): string {
-    const colors: { [key: string]: string } = {
-      'modern': '#3b82f6',
-      'classic': '#1e293b',
-      'creative': '#8b5cf6',
-      'minimal': '#10b981'
-    };
-    return colors[templateType] || '#3b82f6';
-  }
-
   getTemplateGradient(templateType: string): string {
     const gradients: { [key: string]: string } = {
       'modern': 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',

@@ -41,11 +41,3 @@ export interface Language {
   name: string;
   level: string;
 }
-
-export interface CVTemplate {
-  id: string;
-  name: string;
-  preview: string;
-  description: string;
-  color?: string;
-}

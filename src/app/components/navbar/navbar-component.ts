@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit {
 
     this.items = [
       {
-        label: 'Home',
+        label: 'Strona Główna',
         icon: 'pi pi-home',
         routerLink: ['/main-page']
       },
